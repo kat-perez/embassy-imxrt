@@ -3,6 +3,7 @@ name = "embassy-imxrt-perf-examples"
 version = "0.1.0"
 edition = "2021"
 license = "MIT"
+resolver = "2"
 
 [profile.release]
 lto = true # better optimizations
@@ -48,13 +49,13 @@ embedded-storage = { version = "0.3" }
 embedded-storage-async = { version = "0.4.1" }
 mimxrt600-fcb = "0.2.2"
 rand = { version = "0.8.5", default-features = false }
-rtos-trace = { version = "0.1.3", optional = true }
+rtos-trace = { version = "0.1.3", path = "C:\\Users\\katperez\\rtos-trace\\rtos_trace", optional = true }
 systemview-target = { version = "0.1.2", features = [
     "log",
     "callbacks-app",
     "callbacks-os",
     "cortex-m",
-], optional = true }
+], path = "C:\\Users\\katperez\\rtos-trace\\systemview_target", optional = true }
 
 [features]
 systemview-tracing = ["systemview-target", "rtos-trace"]

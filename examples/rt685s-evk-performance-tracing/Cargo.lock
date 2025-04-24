@@ -333,7 +333,7 @@ dependencies = [
  "document-features",
  "embassy-executor-macros",
  "embassy-time-driver",
- "rtos-trace",
+ "rtos-trace 0.1.3 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -415,7 +415,7 @@ dependencies = [
  "mimxrt600-fcb",
  "panic-probe",
  "rand",
- "rtos-trace",
+ "rtos-trace 0.1.3",
  "storage_bus",
  "systemview-target",
 ]
@@ -1031,6 +1031,10 @@ checksum = "2b15c43186be67a4fd63bee50d0303afffcef381492ebe2c5d87f324e1b8815c"
 [[package]]
 name = "rtos-trace"
 version = "0.1.3"
+
+[[package]]
+name = "rtos-trace"
+version = "0.1.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cdb6bcec3374f2049b3979112fa2e6c49b2a37f08de9b9759c6aa76531fb8097"
 
@@ -1157,8 +1161,6 @@ dependencies = [
 [[package]]
 name = "systemview-target"
 version = "0.1.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fac27f629c45bad9dbd40481a3dc6cdc633e8f4ddf6d1bad2cf9ad8af4e3e92b"
 dependencies = [
  "bindgen",
  "cc",
@@ -1166,7 +1168,7 @@ dependencies = [
  "cty",
  "heapless 0.7.17",
  "log",
- "rtos-trace",
+ "rtos-trace 0.1.3",
 ]
 
 [[package]]
