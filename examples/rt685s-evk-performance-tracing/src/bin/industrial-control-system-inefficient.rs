@@ -9,7 +9,8 @@ use embassy_imxrt::i2c;
 use embassy_time::Timer;
 use embedded_hal_1::i2c::I2c;
 use panic_probe as _;
-use rtos_trace;
+use rtos_trace::TaskInfo;
+use systemview_target::{RtosTrace, SystemView};
 
 #[cfg(feature = "systemview-tracing")]
 use embassy_imxrt_perf_examples::SYSTEMVIEW;
@@ -45,6 +46,18 @@ async fn main(spawner: Spawner) {
 
     #[cfg(feature = "systemview-tracing")]
     SYSTEMVIEW.init();
+
+    let task_id = 1;
+    SystemView::task_new(task_id);
+
+    let task_info = TaskInfo {
+        name: "main",
+        priority: 0,
+        stack_base: 0,
+        stack_size: 0,
+    };
+
+    SystemView::task_send_info(task_id, task_info);
 
     // Initialize peripherals
     use embassy_imxrt::gpio::*;
