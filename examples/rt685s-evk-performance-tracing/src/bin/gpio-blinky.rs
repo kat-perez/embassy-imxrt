@@ -1,8 +1,11 @@
 #![no_std]
 #![no_main]
 
+extern crate embassy_imxrt_perf_examples;
+
 use embassy_executor::Spawner;
 use embassy_imxrt::gpio;
+#[cfg(feature = "systemview-tracing")]
 use embassy_imxrt_perf_examples::SYSTEMVIEW;
 use embassy_time::Timer;
 
@@ -29,5 +32,6 @@ async fn main(spawner: Spawner) {
         gpio::SlewRate::Standard,
     );
 
+    #[cfg(feature = "systemview-tracing")]
     let _ = spawner.spawn_named("led_toggle_task\0", led_toggle_task(led));
 }

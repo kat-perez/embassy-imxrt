@@ -8,7 +8,6 @@ use embassy_executor::Spawner;
 use embassy_imxrt::gpio;
 use embassy_time::Timer;
 use panic_probe as _;
-use rtos_trace;
 
 #[cfg(feature = "systemview-tracing")]
 use embassy_imxrt_perf_examples::SYSTEMVIEW;
@@ -27,6 +26,7 @@ static PROCESSING_ACTIVE: AtomicBool = AtomicBool::new(false);
 #[embassy_executor::task]
 async fn data_processing_task() {
     loop {
+        #[cfg(feature = "systemview-tracing")]
         rtos_trace::trace::marker(TestTraceMarker::Test1 as u32);
         if BUFFER_READY.load(Ordering::SeqCst) {
             PROCESSING_ACTIVE.store(true, Ordering::SeqCst);
@@ -39,6 +39,7 @@ async fn data_processing_task() {
             PROCESSING_ACTIVE.store(false, Ordering::SeqCst);
             BUFFER_READY.store(false, Ordering::SeqCst);
         }
+        #[cfg(feature = "systemview-tracing")]
         rtos_trace::trace::marker(TestTraceMarker::Test2 as u32);
 
         // Frequent polling
@@ -51,6 +52,17 @@ async fn data_processing_task() {
 async fn communication_task() {
     loop {
         for _ in 0..5000 {
+            let _ = core::hint::black_box(42u32);
+        }
+
+        Timer::after_millis(20).await;
+    }
+}
+
+#[embassy_executor::task]
+async fn communication_task_faster() {
+    loop {
+        for _ in 0..10 {
             let _ = core::hint::black_box(42u32);
         }
 
@@ -95,8 +107,20 @@ async fn main(spawner: Spawner) {
         gpio::SlewRate::Standard,
     );
 
-    let _ = spawner.spawn_named("data_processing_task\0", data_processing_task());
-    let _ = spawner.spawn_named("communication_task\0", communication_task());
-    let _ = spawner.spawn_named("user_interface_task\0", user_interface_task());
-    let _ = spawner.spawn_named("led_toggle_task\0", led_toggle_task(led));
+    #[cfg(feature = "systemview-tracing")]
+    {
+        let _ = spawner.spawn_named("data_processing_task\0", data_processing_task());
+        //let _ = spawner.spawn_named("communication_task\0", communication_task());
+        let _ = spawner.spawn_named("communication_task\0", communication_task_faster());
+        let _ = spawner.spawn_named("user_interface_task\0", user_interface_task());
+        let _ = spawner.spawn_named("led_toggle_task\0", led_toggle_task(led));
+    }
+
+    #[cfg(not(feature = "systemview-tracing"))]
+    {
+        let _ = spawner.spawn(data_processing_task());
+        let _ = spawner.spawn(communication_task());
+        let _ = spawner.spawn(user_interface_task());
+        let _ = spawner.spawn(led_toggle_task(led));
+    }
 }

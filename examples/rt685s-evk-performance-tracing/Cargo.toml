@@ -33,7 +33,6 @@ embassy-executor = { git = "https://github.com/embassy-rs/embassy", features = [
     "executor-thread",
     "executor-interrupt",
     "defmt",
-    "rtos-trace",
 ] }
 embassy-futures = { git = "https://github.com/embassy-rs/embassy" }
 embassy-time = { git = "https://github.com/embassy-rs/embassy", features = [
@@ -55,10 +54,14 @@ systemview-target = { version = "0.1.2", features = [
     "callbacks-app",
     "callbacks-os",
     "cortex-m",
-] }
+], optional = true }
 
 [features]
-systemview-tracing = ["rtos-trace"]
+systemview-tracing = [
+    "rtos-trace",
+    "embassy-executor/rtos-trace",
+    "systemview-target",
+]
 rtos-trace = ["dep:rtos-trace"]
 
 #[patch."https://github.com/embassy-rs/embassy"]

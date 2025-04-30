@@ -2,6 +2,8 @@
 
 use mimxrt600_fcb::FlexSPIFlashConfigurationBlock;
 use panic_probe as _;
+#[cfg(feature = "systemview-tracing")]
+use rtos_trace;
 
 // auto-generated version information from Cargo.toml
 include!(concat!(env!("OUT_DIR"), "/biv.rs"));
@@ -34,34 +36,34 @@ mod systemview_tracing {
         }
     }
     rtos_trace::global_application_callbacks! {TraceInfo}
-
-    // Stub implementations for defmt since defmt_rtt cannot be used when systemview RTT is enabled
-    #[no_mangle]
-    pub unsafe extern "C" fn _defmt_write(_bytes: *const u8, _len: usize) {
-        // Stub implementation - does nothing
-        // In a real implementation, this would write log data to some output
-    }
-
-    #[no_mangle]
-    pub unsafe extern "C" fn _defmt_acquire() -> isize {
-        // Stub implementation - return a dummy value
-        // In a real implementation, this would acquire some resource like a mutex
-        0
-    }
-
-    #[no_mangle]
-    pub unsafe extern "C" fn _defmt_release(_token: isize) {
-        // Stub implementation - does nothing
-        // In a real implementation, this would release the resource acquired by defmt_acquire
-    }
-
-    #[no_mangle]
-    pub unsafe extern "C" fn _defmt_timestamp() -> u64 {
-        // Stub implementation - return a dummy timestamp
-        // In a real implementation, this would return the current system time
-        0
-    }
 }
 
 #[cfg(feature = "systemview-tracing")]
 pub use systemview_tracing::SYSTEMVIEW;
+// Stub implementations for defmt since defmt_rtt cannot be used when systemview RTT is enabled
+
+#[no_mangle]
+pub unsafe extern "C" fn _defmt_write(_bytes: *const u8, _len: usize) {
+    // Stub implementation - does nothing
+    // In a real implementation, this would write log data to some output
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn _defmt_acquire() -> isize {
+    // Stub implementation - return a dummy value
+    // In a real implementation, this would acquire some resource like a mutex
+    -1
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn _defmt_release(_token: isize) {
+    // Stub implementation - does nothing
+    // In a real implementation, this would release the resource acquired by defmt_acquire
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn _defmt_timestamp() -> u64 {
+    // Stub implementation - return a dummy timestamp
+    // In a real implementation, this would return the current system time
+    u64::MAX
+}
