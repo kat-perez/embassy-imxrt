@@ -8,12 +8,8 @@ use embassy_executor::Spawner;
 use embassy_imxrt::gpio;
 use embassy_time::Timer;
 use panic_probe as _;
-use rtos_trace;
 
-#[cfg(feature = "systemview-tracing")]
-use embassy_imxrt_perf_examples::SYSTEMVIEW;
-
-// RTOS Trace Markers
+// Trace Markers
 #[repr(u32)]
 enum TestTraceMarker {
     Test1 = 0x10,
@@ -27,7 +23,7 @@ static PROCESSING_ACTIVE: AtomicBool = AtomicBool::new(false);
 #[embassy_executor::task]
 async fn data_processing_task() {
     loop {
-        rtos_trace::trace::marker(TestTraceMarker::Test1 as u32);
+        systemview_tracing::mark_trace(TestTraceMarker::Test1 as u32);
         if BUFFER_READY.load(Ordering::SeqCst) {
             PROCESSING_ACTIVE.store(true, Ordering::SeqCst);
 
@@ -39,7 +35,7 @@ async fn data_processing_task() {
             PROCESSING_ACTIVE.store(false, Ordering::SeqCst);
             BUFFER_READY.store(false, Ordering::SeqCst);
         }
-        rtos_trace::trace::marker(TestTraceMarker::Test2 as u32);
+        systemview_tracing::mark_trace(TestTraceMarker::Test2 as u32);
 
         // Frequent polling
         Timer::after_millis(1).await;
@@ -84,8 +80,7 @@ async fn led_toggle_task(mut led: gpio::Output<'static>) {
 async fn main(spawner: Spawner) {
     let p = embassy_imxrt::init(Default::default());
 
-    #[cfg(feature = "systemview-tracing")]
-    SYSTEMVIEW.init();
+    systemview_tracing::init_tracing(25_000_000);
 
     let led = gpio::Output::new(
         p.PIO0_26,
