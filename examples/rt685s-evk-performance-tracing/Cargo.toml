@@ -33,7 +33,6 @@ embassy-executor = { git = "https://github.com/embassy-rs/embassy", features = [
     "executor-thread",
     "executor-interrupt",
     "defmt",
-    "rtos-trace",
 ] }
 embassy-futures = { git = "https://github.com/embassy-rs/embassy" }
 embassy-time = { git = "https://github.com/embassy-rs/embassy", features = [
@@ -49,17 +48,10 @@ embedded-storage = { version = "0.3" }
 embedded-storage-async = { version = "0.4.1" }
 mimxrt600-fcb = "0.2.2"
 rand = { version = "0.8.5", default-features = false }
-rtos-trace = { version = "0.1.3", path = "../../../rtos-trace/rtos_trace", optional = true }
-systemview-target = { version = "0.1.2", features = [
-    "log",
-    "callbacks-app",
-    "callbacks-os",
-    "cortex-m",
-] }
+systemview-tracing = { path = "../../../systemview-tracing", optional = true }
 
 [features]
-systemview-tracing = ["rtos-trace"]
-rtos-trace = ["dep:rtos-trace"]
+systemview-tracing = ["dep:systemview-tracing", "embassy-executor/rtos-trace"]
 
 #[patch."https://github.com/embassy-rs/embassy"]
 #embassy-executor = { git = "https://github.com/kat-perez/embassy" }
@@ -68,7 +60,3 @@ rtos-trace = ["dep:rtos-trace"]
 [patch."https://github.com/embassy-rs/embassy"]
 embassy-executor = { path = "../../../embassy/embassy-executor" }
 embassy-time-driver = { path = "../../../embassy/embassy-time-driver" }
-
-[patch.crates-io]
-systemview-target = { path = "../../../rtos-trace/systemview_target" }
-rtos-trace = { path = "../../../rtos-trace/rtos_trace" }
