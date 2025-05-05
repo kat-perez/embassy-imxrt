@@ -1,0 +1,74 @@
+[package]
+name = "embassy-imxrt-perf-examples"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+resolver = "2"
+
+[profile.release]
+lto = true # better optimizations
+debug = 2  # enough information for defmt/rtt
+
+[dependencies]
+cortex-m = { version = "0.7.7", features = [
+    "inline-asm",
+    "critical-section-single-core",
+] }
+cortex-m-rt = "0.7.3"
+defmt = "0.3.6"
+panic-probe = { version = "0.3.1", features = ["print-defmt"] }
+embassy-imxrt = { version = "0.1.0", path = "../../", features = [
+    "defmt",
+    "time-driver",
+    "time",
+    "mimxrt685s",
+    "unstable-pac",
+] }
+
+embassy-sync = { git = "https://github.com/embassy-rs/embassy", features = [
+    "defmt",
+] }
+embassy-executor = { git = "https://github.com/embassy-rs/embassy", features = [
+    "arch-cortex-m",
+    "executor-thread",
+    "executor-interrupt",
+    "defmt",
+    "rtos-trace",
+] }
+embassy-futures = { git = "https://github.com/embassy-rs/embassy" }
+embassy-time = { git = "https://github.com/embassy-rs/embassy", features = [
+    "defmt",
+] }
+storage_bus = { git = "https://github.com/OpenDevicePartnership/embedded-services", version = "0.1.1" }
+embedded-hal-1 = { package = "embedded-hal", version = "1.0" }
+embedded-hal-async = "1.0.0"
+futures = { version = "0.3.30", default-features = false, features = [
+    "async-await",
+] }
+embedded-storage = { version = "0.3" }
+embedded-storage-async = { version = "0.4.1" }
+mimxrt600-fcb = "0.2.2"
+rand = { version = "0.8.5", default-features = false }
+rtos-trace = { version = "0.1.3", path = "../../../rtos-trace/rtos_trace", optional = true }
+systemview-target = { version = "0.1.2", features = [
+    "log",
+    "callbacks-app",
+    "callbacks-os",
+    "cortex-m",
+] }
+
+[features]
+systemview-tracing = ["rtos-trace"]
+rtos-trace = ["dep:rtos-trace"]
+
+#[patch."https://github.com/embassy-rs/embassy"]
+#embassy-executor = { git = "https://github.com/kat-perez/embassy" }
+#embassy-time-driver = { git = "https://github.com/kat-perez/embassy" }
+
+[patch."https://github.com/embassy-rs/embassy"]
+embassy-executor = { path = "../../../embassy/embassy-executor" }
+embassy-time-driver = { path = "../../../embassy/embassy-time-driver" }
+
+[patch.crates-io]
+systemview-target = { path = "../../../rtos-trace/systemview_target" }
+rtos-trace = { path = "../../../rtos-trace/rtos_trace" }
