@@ -15,7 +15,6 @@ cortex-m = { version = "0.7.7", features = [
     "critical-section-single-core",
 ] }
 cortex-m-rt = "0.7.3"
-defmt = "0.3.6"
 panic-probe = { version = "0.3.1", features = ["print-defmt"] }
 embassy-imxrt = { version = "0.1.0", path = "../../", features = [
     "defmt",
@@ -48,10 +47,13 @@ embedded-storage = { version = "0.3" }
 embedded-storage-async = { version = "0.4.1" }
 mimxrt600-fcb = "0.2.2"
 rand = { version = "0.8.5", default-features = false }
-systemview-tracing = { path = "../../../systemview-tracing", optional = true }
+systemview-tracing = { path = "../../../systemview-tracing" }
 
 [features]
-systemview-tracing = ["dep:systemview-tracing", "embassy-executor/rtos-trace"]
+systemview-tracing = [
+    "systemview-tracing/tracing-enabled",
+    "embassy-executor/rtos-trace",
+]
 
 #[patch."https://github.com/embassy-rs/embassy"]
 #embassy-executor = { git = "https://github.com/kat-perez/embassy" }
