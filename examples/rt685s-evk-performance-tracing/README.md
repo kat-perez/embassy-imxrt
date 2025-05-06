@@ -20,16 +20,16 @@ Assuming RT685 is powered and connected to Jlink debug probe and the latest prob
 ## Enable tracing
 To add tracing to a project, you must enable the `rtos-trace` feature that comes with `embassy-executor`.
 
-```
-cargo add embassy-executor --features rtos-trace
-```
+Add these lines to your Cargo.toml, this will add systemview-tracing and enabled the `rtos-trace` feature in the embassy-executor crate.
 
 ```
-cargo add rtos-trace
-```
+systemview-tracing = { git = "https://github.com/OpenDevicePartnership/systemview-tracing" }
 
-```
-cargo add systemview-target --features cortex-m,log,callbacks-app,callbacks-os
+[features]
+systemview-tracing = [
+    "systemview-tracing/tracing-enabled",
+    "embassy-executor/rtos-trace",
+]
 ```
 
 ## Performance Tool Tracing
