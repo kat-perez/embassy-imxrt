@@ -48,6 +48,8 @@ embedded-storage-async = { version = "0.4.1" }
 mimxrt600-fcb = "0.2.2"
 rand = { version = "0.8.5", default-features = false }
 systemview-tracing = { git = "https://github.com/OpenDevicePartnership/systemview-tracing", branch = "katperez/add-initial-systemview-tracing-lib" }
+defmt = "1.0.1"
+defmt-rtt = "1.0.0"
 
 [features]
 systemview-tracing = [
