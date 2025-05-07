@@ -55,6 +55,7 @@ defmt-rtt = "1.0.0"
 systemview-tracing = [
     "systemview-tracing/tracing-enabled",
     "embassy-executor/rtos-trace",
+    "embassy-imxrt/systemview-tracing",
 ]
 
 #[patch."https://github.com/embassy-rs/embassy"]

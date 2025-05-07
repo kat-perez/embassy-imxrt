@@ -408,6 +408,7 @@ dependencies = [
  "paste",
  "rand_core",
  "storage_bus",
+ "systemview-tracing",
 ]
 
 [[package]]
