@@ -1187,7 +1187,6 @@ dependencies = [
 [[package]]
 name = "systemview-tracing"
 version = "0.1.0"
-source = "git+https://github.com/OpenDevicePartnership/systemview-tracing?branch=katperez%2Fadd-initial-systemview-tracing-lib#56a7d7c9313244ae013c3b32d30cf976c7f6c461"
 dependencies = [
  "rtos-trace",
  "systemview-target",

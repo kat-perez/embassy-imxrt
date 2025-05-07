@@ -1,7 +1,11 @@
 #![no_std]
 #![no_main]
 
+extern crate embassy_imxrt_perf_examples;
+
+#[cfg(not(feature = "systemview-tracing"))]
 use defmt::info;
+#[cfg(not(feature = "systemview-tracing"))]
 use defmt_rtt as _;
 use embassy_executor::Spawner;
 use embassy_imxrt::adc::{Adc, ChannelConfig, Config, InterruptHandler};
@@ -16,6 +20,9 @@ bind_interrupts!(struct Irqs {
 #[embassy_executor::main]
 async fn main(_spawner: Spawner) {
     let p = embassy_imxrt::init(Default::default());
+
+    systemview_tracing::init_tracing(25_000_000);
+
     let channel_config = [
         ChannelConfig::single_ended(p.PIO0_5),
         ChannelConfig::single_ended(p.PIO0_6),
@@ -26,7 +33,7 @@ async fn main(_spawner: Spawner) {
         let mut data: [i16; 2] = [0; 2];
         adc.sample(&mut data).await;
 
-        info!("ADC sample = {:#x}", data);
+        //info!("ADC sample = {:#x}", data);
 
         Timer::after_millis(1000).await;
     }

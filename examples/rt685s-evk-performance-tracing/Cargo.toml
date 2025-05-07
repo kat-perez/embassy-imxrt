@@ -64,3 +64,6 @@ systemview-tracing = [
 [patch."https://github.com/embassy-rs/embassy"]
 embassy-executor = { path = "../../../embassy/embassy-executor" }
 embassy-time-driver = { path = "../../../embassy/embassy-time-driver" }
+
+[patch."https://github.com/OpenDevicePartnership/systemview-tracing"]
+systemview-tracing = { path = "../../../systemview-tracing" }

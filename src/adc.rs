@@ -81,11 +81,15 @@ pub struct InterruptHandler<T: Instance> {
 
 impl<T: Instance> interrupt::typelevel::Handler<T::Interrupt> for InterruptHandler<T> {
     unsafe fn on_interrupt() {
+        #[cfg(feature = "systemview-tracing")]
+        systemview_tracing::isr_enter();
         let reg = T::info().regs;
 
         // Disable fifo watermark interrupt
         reg.ie().write(|w| w.fwmie().fwmie_0());
         WAKER.wake();
+        #[cfg(feature = "systemview-tracing")]
+        systemview_tracing::isr_exit();
     }
 }
 
