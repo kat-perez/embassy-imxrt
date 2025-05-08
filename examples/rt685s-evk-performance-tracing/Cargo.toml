@@ -59,6 +59,6 @@ systemview-tracing = [
     "embassy-imxrt/systemview-tracing",
 ]
 
-[patch."https://github.com/embassy-rs/embassy"]
-embassy-executor = { git = "https://github.com/kat-perez/embassy" }
-embassy-time-driver = { git = "https://github.com/kat-perez/embassy" }
+#[patch."https://github.com/embassy-rs/embassy"]
+#embassy-executor = { git = "https://github.com/kat-perez/embassy" }
+#embassy-time-driver = { git = "https://github.com/kat-perez/embassy" }
