@@ -147,9 +147,9 @@ checksum = "1fd0f2584146f6f2ef48085050886acf353beff7305ebd1ae69500e27c67f64b"
 
 [[package]]
 name = "cc"
-version = "1.2.20"
+version = "1.2.21"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "04da6a0d40b948dfc4fa8f5bbf402b0fc1a64a28dbf7d12ffd683550f2c1b63a"
+checksum = "8691782945451c1c383942c4874dbe63814f61cb57ef773cda2972682b7bb3c0"
 dependencies = [
  "shlex",
 ]
@@ -323,6 +323,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "either"
+version = "1.15.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "48c757948c5ede0e46177b7add2e67155f70e33c07fea8284df6576da70b3719"
+
+[[package]]
 name = "embassy-executor"
 version = "0.7.0"
 dependencies = [
@@ -384,6 +390,7 @@ dependencies = [
  "embedded-io",
  "embedded-io-async",
  "fixed",
+ "itertools",
  "mimxrt600-fcb",
  "mimxrt633s-pac",
  "mimxrt685s-pac",
@@ -413,9 +420,8 @@ dependencies = [
  "mimxrt600-fcb",
  "panic-probe",
  "rand",
- "rtos-trace",
  "storage_bus",
- "systemview-target",
+ "systemview-tracing",
 ]
 
 [[package]]
@@ -760,6 +766,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b9e0384b61958566e926dc50660321d12159025e767c18e043daf26b70104c39"
 
 [[package]]
+name = "itertools"
+version = "0.11.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b1c173a5686ce8bfa551b3563d0c2170bf24ca44da99c7ca4bfdab5418c3fe57"
+dependencies = [
+ "either",
+]
+
+[[package]]
 name = "lazy_static"
 version = "1.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -802,12 +817,6 @@ dependencies = [
  "autocfg",
  "scopeguard",
 ]
-
-[[package]]
-name = "log"
-version = "0.4.27"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "13dc2df351e3202783a1fe0d44375f7295ffb4049267b0f3018346dc122a1d94"
 
 [[package]]
 name = "memchr"
@@ -1028,6 +1037,8 @@ checksum = "2b15c43186be67a4fd63bee50d0303afffcef381492ebe2c5d87f324e1b8815c"
 [[package]]
 name = "rtos-trace"
 version = "0.1.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "cdb6bcec3374f2049b3979112fa2e6c49b2a37f08de9b9759c6aa76531fb8097"
 
 [[package]]
 name = "rustc-hash"
@@ -1152,14 +1163,23 @@ dependencies = [
 [[package]]
 name = "systemview-target"
 version = "0.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fac27f629c45bad9dbd40481a3dc6cdc633e8f4ddf6d1bad2cf9ad8af4e3e92b"
 dependencies = [
  "bindgen",
  "cc",
  "cortex-m",
  "cty",
- "heapless 0.7.17",
- "log",
  "rtos-trace",
+]
+
+[[package]]
+name = "systemview-tracing"
+version = "0.1.0"
+source = "git+https://github.com/OpenDevicePartnership/systemview-tracing?branch=katperez%2Fadd-initial-systemview-tracing-lib#56a7d7c9313244ae013c3b32d30cf976c7f6c461"
+dependencies = [
+ "rtos-trace",
+ "systemview-target",
 ]
 
 [[package]]
